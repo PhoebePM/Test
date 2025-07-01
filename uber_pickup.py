@@ -2,7 +2,8 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 st.set_page_config(
-    page_title = "BD stats manager"
+    page_title = "BD stats manager",
+    layout = "wide"
 )
 #removed max rows that can be displayed 
 pd.set_option("display.max_rows", None)
