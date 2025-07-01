@@ -1,7 +1,10 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-st.title("Ride")
+st.set_page_config(
+    page_title = "BD stats manager"
+)
+#removed max rows that can be displayed 
 pd.set_option("display.max_rows", None)
 data = pd.read_excel("data1.xlsx","member_data")
 
