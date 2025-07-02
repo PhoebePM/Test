@@ -7,10 +7,11 @@ st.set_page_config(
 )
 #removed max rows that can be displayed 
 pd.set_option("display.max_rows", None)
-data = pd.read_excel("data1.xlsx","member_data")
+
 
 
 def gender():
+    data = pd.read_excel("data1.xlsx","member_data")
     #table of numner of m and f
     gender_counts = data['sex_life_1'].value_counts()
     num_women = gender_counts.get('F', 0)
@@ -20,7 +21,7 @@ def gender():
     total = num_men + num_women
     percent_f = round(num_women / total,2)
     percent_m = round(num_men / total,2)
-    #table
+    #table - python dictioary
     gender_f = {
         'Gender': ['Male','Female'],
         'Count': [num_men, num_women],
