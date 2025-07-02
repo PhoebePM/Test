@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import matplotlib.pyplot as plt
 import numpy as np
 
 
@@ -10,7 +11,6 @@ pd.set_option("display.max_rows", None)
 #this is what will be displayed on the main page - statistics
 def stats(name_f):
     with col1:
-        
         gender(name_f)
 
 def gender(file):
@@ -19,11 +19,19 @@ def gender(file):
     gender_counts = data['sex_life_1'].value_counts()
     num_women = gender_counts.get('F', 0)
     num_men = gender_counts.get('M',0)
-    num_people = gender_counts.get(not 'M' or not 'F',1)
+    #not m or f
+    num_other = gender_counts.get(not 'M' or not 'F',1)
+
+    sizes = [num_men,num_women,num_other]
+    #setting up column 
+    label_pie_g = 'Male','Female','Other'
+    colour_pie = 'b','r','g'
+    plt.pie(sizes,labels = label_pie_g, colors = colour_pie)
+    st.pyplot()
 
     #calc percentage of m and f
     #add validation to - check no null values
-    total = num_men + num_women + num_people
+    total = num_men + num_women + num_other
     percent_f = round(num_women / total,2)
     percent_m = round(num_men / total,2)
     #table - python dictioary
@@ -42,7 +50,8 @@ st.set_page_config(
     layout = "wide",
     initial_sidebar_state= 'auto')
 
-col1, col2, col3 = st.columns(0.4,0.3,0.3,gap ='small',vertical_alignment= 'top')
+#column set up
+col1, col2, col3 = st.columns([0.4,0.3,0.3], gap = 'small')
 
 
 with st.sidebar:
