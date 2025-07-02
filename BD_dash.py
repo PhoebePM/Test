@@ -1,17 +1,14 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-st.set_page_config(
-    page_title = "BD stats manager",
-    layout = "wide"
-)
 #removed max rows that can be displayed 
 pd.set_option("display.max_rows", None)
 
+def stats(name_f):
+    gender(name_f)
 
-
-def gender():
-    data = pd.read_excel("data1.xlsx","member_data")
+def gender(file):
+    data = pd.read_excel("%s"%file,"member_data")
     #table of numner of m and f
     gender_counts = data['sex_life_1'].value_counts()
     num_women = gender_counts.get('F', 0)
@@ -31,4 +28,21 @@ def gender():
     df = pd.DataFrame(gender_f)
     st.dataframe(df)
 
-gender()
+
+st.set_page_config(
+    page_title = "BD stats manager",
+    layout = "wide",
+    initial_sidebar_state= 'auto')
+
+with st.sidebar:
+    st.header('Files')
+    st.header('File upload')
+    
+    uploaded_file = st.file_uploader('Upload a file')
+    st.header('Uploaded files')
+    
+    if uploaded_file is not None:
+        st.button(label = uploaded_file.name, on_click = stats(uploaded_file.name))
+        
+
+
