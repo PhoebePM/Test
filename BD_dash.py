@@ -42,7 +42,8 @@ with st.sidebar:
     st.header('Uploaded files')
     
     if uploaded_file is not None:
-        st.button(label = uploaded_file.name, on_click = stats(uploaded_file.name))
+        f_name = uploaded_file.name
+        st.button(label = uploaded_file.name, on_click = lambda f_name: stats(f_name))
         
 
 
