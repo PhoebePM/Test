@@ -23,24 +23,28 @@ def gender(file):
     num_other = gender_counts.get(not 'M' or not 'F',1)
 
     sizes = [num_men,num_women,num_other]
-    #setting up column 
+    #setting up pie chart
     label_pie_g = 'Male','Female','Other'
     colour_pie = 'b','r','g'
-    plt.pie(sizes,labels = label_pie_g, colors = colour_pie)
-    st.pyplot()
+    #makes code thread safe
+    fig, ax = plt.subplots()
+    ax.pie(sizes,labels = label_pie_g, colours = colour_pie)
+    st.pyplot(fig)
 
     #calc percentage of m and f
     #add validation to - check no null values
     total = num_men + num_women + num_other
     percent_f = round(num_women / total,2)
     percent_m = round(num_men / total,2)
+    percent_o = round(num_other/ total,2)
+
     #table - python dictioary
     gender_f = {
-        'Gender': ['Male','Female'],
-        'Count': [num_men, num_women],
-        'Percent': [percent_m, percent_f]
+        'Gender': ['Male','Female','Other'],
+        'Count': [num_men, num_women, num_other],
+        'Percent': [percent_m, percent_f, percent_o]
     }
-
+    #display  data as a table
     df = pd.DataFrame(gender_f)
     st.dataframe(df)
 
@@ -53,7 +57,7 @@ st.set_page_config(
 #column set up
 col1, col2, col3 = st.columns([0.4,0.3,0.3], gap = 'small')
 
-
+#setting up sidebar
 with st.sidebar:
     st.header('Files')
     st.header('File upload')
@@ -64,7 +68,7 @@ with st.sidebar:
     if uploaded_file is not None:
         f_name = uploaded_file.name
         #when pressed will display statistics on the file - file name on button
-        st.button(label = uploaded_file.name, on_click = lambda f_name: stats(f_name))
+        st.button(label = uploaded_file.name, on_click = lambda: stats(f_name))
 
 
         
