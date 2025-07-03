@@ -15,14 +15,14 @@ def stats(uploaded_file):
         gender(uploaded_file)
 
 def gender(file):
-    file_path = os.path.abspath(file)
-    data = pd.read_excel(file_path,sheet_name = "member_data")
+    data = pd.read_excel(file,sheet_name = "member_data")
     #table of number of m and f
     gender_counts = data['sex_life_1'].value_counts()
     num_women = gender_counts.get('F', 0)
     num_men = gender_counts.get('M',0)
     #not m or f
-    num_other = gender_counts.get(not 'M' or not 'F',1)
+    total = data.shape[0]
+    num_other = total - (num_women + num_men)
 
     sizes = [num_men,num_women,num_other]
     #setting up pie chart
