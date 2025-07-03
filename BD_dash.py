@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import numpy as np
+import os
 
 
 
@@ -9,13 +10,13 @@ import numpy as np
 pd.set_option("display.max_rows", None)
 
 #this is what will be displayed on the main page - statistics
-def stats(name_f):
+def stats(uploaded_file):
     with col1:
-        gender(name_f)
+        gender(uploaded_file)
 
 def gender(file):
-    data = pd.read_excel("%s"%file,"member_data")
-    #st.write('**Sex Distribution**')
+    file_path = os.path.abspath(file)
+    data = pd.read_excel(file_path,sheet_name = "member_data")
     #table of number of m and f
     gender_counts = data['sex_life_1'].value_counts()
     num_women = gender_counts.get('F', 0)
@@ -57,7 +58,7 @@ with st.sidebar:
     if uploaded_file is not None:
         f_name = uploaded_file.name
         #when pressed will display statistics on the file - file name on button
-        st.button(label = uploaded_file.name, on_click = lambda: stats(f_name))
+        st.button(label = uploaded_file.name, on_click = lambda: stats(uploaded_file))
 
 
         
