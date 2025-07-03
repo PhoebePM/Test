@@ -13,13 +13,39 @@ pd.set_option("display.max_rows", None)
 def stats(uploaded_file):
     #places gender statistics in column one
     with col1:
+        st.header('Statistics On Pension File')
         get_total_pension(uploaded_file)
+        portion_married(uploaded_file)
     
     with col2:
         gender(uploaded_file)
     
+    with col3:
+        #age_variation(uploaded_file)
+        pass
 
-    
+#showing the variation in age of the pensioners
+def age_variation(file):
+    data = pd.read_excel(file,sheet_name = 'member_data')
+    data_frame = px.data.tips()
+    fig = px.box (
+        data_frame,
+        y = 'Age',
+        points = 'all',
+        title = 'Age Distribution'
+    )
+    st.plotly_chart(fig)
+
+
+def portion_married(file):
+    data = pd.read_excel(file,sheet_name = 'member_data')
+    #table of married status 
+    married_counts = data['marital_status'].value_counts()
+    st.subheader('**Marital Status Of Pensioners**')
+    #generate bar chart based on data
+    st.bar_chart(pd.DataFrame(married_counts))
+
+   
 def get_total_pension(file):
     data = pd.read_excel(file,sheet_name = 'member_data')
     #sums the value in the total member pension column
