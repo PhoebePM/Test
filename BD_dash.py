@@ -11,8 +11,21 @@ pd.set_option("display.max_rows", None)
 
 #this is what will be displayed on the main page - statistics
 def stats(uploaded_file):
+    #places gender statistics in column one
     with col1:
+        get_total_pension(uploaded_file)
+    
+    with col2:
         gender(uploaded_file)
+    
+
+    
+def get_total_pension(file):
+    data = pd.read_excel(file,sheet_name = 'member_data')
+    #sums the value in the total member pension column
+    total_pension = data['total_member_pension'].sum()
+    st.write('**Total Of All Member Pensions:**',total_pension)
+
 
 def gender(file):
     data = pd.read_excel(file,sheet_name = "member_data")
@@ -20,14 +33,14 @@ def gender(file):
     gender_counts = data['sex_life_1'].value_counts()
     num_women = gender_counts.get('F', 0)
     num_men = gender_counts.get('M',0)
-    #not m or f
+    #getting total number of members
     total = data.shape[0]
+    #not m or f
     num_other = total - (num_women + num_men)
 
     sizes = [num_men,num_women,num_other]
     #setting up pie chart
     label_pie_g = 'Male','Female','Other'
-    colour_pie = 'b','r','g'
     #makes code thread safe
     fig = px.pie(
         names = label_pie_g,
@@ -35,6 +48,7 @@ def gender(file):
         title = 'Sex Distribution',
 
     )
+    #allows for the percentages to be displayed when the section is hovered over
     fig.update_traces(textinfo = 'none', hovertemplate='%{label}: %{percent}' )
     st.plotly_chart(fig)
 
@@ -45,7 +59,7 @@ st.set_page_config(
     initial_sidebar_state= 'auto')
 
 #column set up
-col1, col2, col3 = st.columns([0.3,0.4,0.3], gap = 'small')
+col1, col2, col3 = st.columns([0.3,0.4,0.3], gap = 'medium')
 
 #setting up sidebar
 with st.sidebar:
