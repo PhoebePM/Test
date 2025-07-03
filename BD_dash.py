@@ -52,13 +52,21 @@ with st.sidebar:
     st.header('Files')
     st.header('File upload')
     
-    uploaded_file = st.file_uploader('Upload a file')
-    st.header('Uploaded files')
+    if 'uploaded_file' not in st.session_state:
+        #dictionary that stores each file uploaded
+        st.session_state.uploaded_file = {}
     
-    if uploaded_file is not None:
-        f_name = uploaded_file.name
-        #when pressed will display statistics on the file - file name on button
-        st.button(label = uploaded_file.name, on_click = lambda: stats(uploaded_file))
+    new_file = st.file_uploader('Upload a file')
+    #st.header('Uploaded files')
+    
+    if new_file is not None:
+        #assigns the key as the name of thr file and the new_file as the value (its and object)
+        st.session_state.uploaded_file[new_file.name] = new_file
+        #produces a button for each file that is in our dictionary
+        for name, file in st.session_state.uploaded_file.items():
+         #when pressed will display statistics on the file - file name on button
+            st.button(label = name, on_click = lambda: stats(file))
+
 
 
         
