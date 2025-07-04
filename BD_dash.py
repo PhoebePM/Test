@@ -1,9 +1,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 import numpy as np
-import os
-
 
 
 #removed max rows that can be displayed 
@@ -21,18 +20,17 @@ def stats(uploaded_file):
         gender(uploaded_file)
     
     with col3:
-        #age_variation(uploaded_file)
-        pass
+        age_variation(uploaded_file)
 
 #showing the variation in age of the pensioners
 def age_variation(file):
     data = pd.read_excel(file,sheet_name = 'member_data')
-    data_frame = px.data.tips()
-    fig = px.box (
-        data_frame,
-        y = 'Age',
-        points = 'all',
-        title = 'Age Distribution'
+    fig = go.Figure()
+    fig.add_trace(go.Box(x = data['date_of_birth_1'] ))
+    fig.update_layout(
+        title = 'Age Variation',
+        yaxis_title = 'Pensioner Ages',
+        xaxis_title = 'Date of Birth'
     )
     st.plotly_chart(fig)
 
@@ -67,7 +65,6 @@ def gender(file):
     sizes = [num_men,num_women,num_other]
     #setting up pie chart
     label_pie_g = 'Male','Female','Other'
-    #makes code thread safe
     fig = px.pie(
         names = label_pie_g,
         values = sizes,
