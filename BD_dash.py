@@ -12,6 +12,7 @@ pd.set_option("display.max_rows", None)
 def stats(uploaded_file):
     #places gender statistics in column one
     with col1:
+        st.write(uploaded_file.name)
         st.header('Statistics On Pension File')
         get_total_pension(uploaded_file)
         portion_married(uploaded_file)
@@ -66,7 +67,7 @@ def gender(file):
 
     sizes = [num_men,num_women,num_other]
     #setting up pie chart
-    label_pie_g = 'Male','Female','Other'
+    label_pie_g = 'Male','Female','N/A'
     fig = px.pie(
         names = label_pie_g,
         values = sizes,
@@ -91,18 +92,22 @@ col1, col2, col3 = st.columns([0.3,0.4,0.3], gap = 'medium')
 with st.sidebar:
     st.header('Files')
     st.header('File upload')
-    
+    with col1:
+        placeholder = st.empty()
+        placeholder.title('Upload A File To Recieve Statistics')
+        
     if 'uploaded_file' not in st.session_state:
         #dictionary that stores each file uploaded
         st.session_state.uploaded_file = {}
     
     new_file = st.file_uploader('Upload a file')
-    #st.header('Uploaded files')
     
     if new_file is not None:
+        placeholder.empty()
         #assigns the key as the name of thr file and the new_file as the value (its and object)
         st.session_state.uploaded_file[new_file.name] = new_file
         #produces a button for each file that is in our dictionary
+        st.subheader('Click On File to See Stats')
         for name, file in st.session_state.uploaded_file.items():
          #when pressed will display statistics on the file - file name on button
-            st.button(label = name, on_click = lambda: stats(file))
+            st.button(label = name, on_click = lambda f = file: stats(f))
