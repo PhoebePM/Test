@@ -26,7 +26,9 @@ def stats(uploaded_file):
 def age_variation(file):
     data = pd.read_excel(file,sheet_name = 'member_data')
     fig = go.Figure()
+    #creating box plot based on dob column
     fig.add_trace(go.Box(x = data['date_of_birth_1'] ))
+    #adding labels to box plot
     fig.update_layout(
         title = 'Age Variation',
         yaxis_title = 'Pensioner Ages',
@@ -69,6 +71,7 @@ def gender(file):
         names = label_pie_g,
         values = sizes,
         title = 'Sex Distribution',
+        color_discrete_sequence = ['#003F5C','#BC5090','#FFA600'],
 
     )
     #allows for the percentages to be displayed when the section is hovered over
@@ -103,9 +106,3 @@ with st.sidebar:
         for name, file in st.session_state.uploaded_file.items():
          #when pressed will display statistics on the file - file name on button
             st.button(label = name, on_click = lambda: stats(file))
-
-
-
-        
-
-
